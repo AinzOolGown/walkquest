@@ -1,0 +1,1 @@
+ C:\\Users\\bruno\\Desktop\\mad\\inClassFire\\firebaseshop\\build\\e58688114094ae2f15839deb865da88d\\dart_build_result.json: 
