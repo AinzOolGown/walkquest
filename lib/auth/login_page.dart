@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
 
   bool isLogin = true;
   bool loading = false;
@@ -39,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               .collection('users')
               .doc(user.uid)
               .set({
-            "username": emailController.text.split('@')[0], // temporary
+            "username": usernameController.text.trim(),
             "email": emailController.text.trim(),
             "totalSteps": 0,
             "todaySteps": 0,
@@ -67,6 +68,11 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            if (!isLogin)
+            TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(labelText: "Username"),
+            ),
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: "Email"),
