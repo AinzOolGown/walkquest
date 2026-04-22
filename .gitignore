@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$PigeonFirebaseOptions$Builder.class
+=======
+>>>>>>> Stashed changes
 .dart_tool/flutter_build/6751b27cad6efbf821c7d68bb0e57a4a/.filecache
 .dart_tool/flutter_build/6751b27cad6efbf821c7d68bb0e57a4a/app.dill
 .dart_tool/flutter_build/6751b27cad6efbf821c7d68bb0e57a4a/dart_build.d
@@ -111,7 +114,10 @@ build/.cxx/debug/6c4nrc6o/x86_64/configure_fingerprint.bin
 build/.cxx/debug/6c4nrc6o/x86_64/metadata_generation_command.txt
 build/.cxx/debug/6c4nrc6o/x86_64/prefab_config.json
 build/.cxx/debug/6c4nrc6o/x86_64/symbol_folder_index.txt
+<<<<<<< Updated upstream
 build/1d0e3801c4b8667393770d82672c44cf/gen_dart_plugin_registrant.stamp
+=======
+>>>>>>> Stashed changes
 build/app/deeplink.json
 build/app/generated/res/google-services/debug/values/values.xml
 build/app/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
@@ -146,18 +152,33 @@ build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/configure_command.bat
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/configure_stderr.txt
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/configure_stdout.txt
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/generate_cxx_metadata_132_timing.txt
+<<<<<<< Updated upstream
+=======
+build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/generate_cxx_metadata_472_timing.txt
+build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/generate_cxx_metadata_822_timing.txt
+>>>>>>> Stashed changes
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/metadata_generation_record.json
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/build_model.json
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/configure_command.bat
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/configure_stderr.txt
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/configure_stdout.txt
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/generate_cxx_metadata_144_timing.txt
+<<<<<<< Updated upstream
+=======
+build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/generate_cxx_metadata_472_timing.txt
+build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/generate_cxx_metadata_822_timing.txt
+>>>>>>> Stashed changes
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/armeabi-v7a/metadata_generation_record.json
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/build_model.json
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/configure_command.bat
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/configure_stderr.txt
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/configure_stdout.txt
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/generate_cxx_metadata_136_timing.txt
+<<<<<<< Updated upstream
+=======
+build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/generate_cxx_metadata_486_timing.txt
+build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/generate_cxx_metadata_822_timing.txt
+>>>>>>> Stashed changes
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/x86_64/metadata_generation_record.json
 build/app/intermediates/desugar_graph/debug/dexBuilderDebug/out/currentProject/dirs_bucket_0/graph.bin
 build/app/intermediates/desugar_graph/debug/dexBuilderDebug/out/currentProject/dirs_bucket_1/graph.bin
@@ -181,7 +202,13 @@ build/app/intermediates/desugar_graph/debug/dexBuilderDebug/out/currentProject/j
 build/app/intermediates/desugar_graph/debug/dexBuilderDebug/out/currentProject/jar_27078ee347630533e11f59b1f971eca96724567f8d4b504e7a510e4e84a700d5_bucket_9/graph.bin
 build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 build/app/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
+<<<<<<< Updated upstream
 build/app/intermediates/dex/debug/mergeLibDexDebug/11/classes.dex
+=======
+build/app/intermediates/dex/debug/mergeLibDexDebug/1/classes.dex
+build/app/intermediates/dex/debug/mergeLibDexDebug/11/classes.dex
+build/app/intermediates/dex/debug/mergeLibDexDebug/12/classes.dex
+>>>>>>> Stashed changes
 build/app/intermediates/dex/debug/mergeLibDexDebug/13/classes.dex
 build/app/intermediates/dex/debug/mergeLibDexDebug/2/classes.dex
 build/app/intermediates/dex/debug/mergeLibDexDebug/3/classes.dex
@@ -595,6 +622,7 @@ build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-xxhdpi-v
 build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-xxxhdpi-v4/ic_launcher.png
 build/app/intermediates/packaged_res/debug/packageDebugResources/values-night-v8/values-night-v8.xml
 build/app/intermediates/packaged_res/debug/packageDebugResources/values/values.xml
+<<<<<<< Updated upstream
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/com/example/firebaseshop/MainActivity.dex
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/ff883e70385523e9fa3d11bae026a952e165d1d89d92066290ec68abac1f6484_0.jar
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/ff883e70385523e9fa3d11bae026a952e165d1d89d92066290ec68abac1f6484_1.jar
@@ -606,6 +634,19 @@ build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/ff883e7038
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/ff883e70385523e9fa3d11bae026a952e165d1d89d92066290ec68abac1f6484_7.jar
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/ff883e70385523e9fa3d11bae026a952e165d1d89d92066290ec68abac1f6484_8.jar
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/ff883e70385523e9fa3d11bae026a952e165d1d89d92066290ec68abac1f6484_9.jar
+=======
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_0.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_1.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_2.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_3.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_4.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_5.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_6.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_7.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_8.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_9.jar
+build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/com/example/firebaseshop/MainActivity.dex
+>>>>>>> Stashed changes
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/io/flutter/plugins/GeneratedPluginRegistrant.dex
 build/app/intermediates/runtime_symbol_list/debug/processDebugResources/R.txt
 build/app/intermediates/signing_config_versions/debug/writeDebugSigningConfigVersions/signing-config-versions.json
@@ -981,7 +1022,10 @@ build/cloud_firestore/intermediates/symbol_list_with_package_name/debug/generate
 build/cloud_firestore/outputs/aar/cloud_firestore-debug.aar
 build/cloud_firestore/outputs/logs/manifest-merger-debug-report.txt
 build/cloud_firestore/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+<<<<<<< Updated upstream
 build/f537d389bd7fe17e116f8b847863fcdd.cache.dill.track.dill
+=======
+>>>>>>> Stashed changes
 build/firebase_auth/.transforms/46d07fb72cf06dc65024e25b567f1de9/results.bin
 build/firebase_auth/.transforms/46d07fb72cf06dc65024e25b567f1de9/transformed/classes/classes_dex/classes.dex
 build/firebase_auth/.transforms/ae63ddd673d132b65c837746d50a7d27/results.bin
@@ -1450,6 +1494,10 @@ build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRun
 build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$FirebaseCoreHostApi.class
 build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$FirebaseCoreHostApiCodec.class
 build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$FlutterError.class
+<<<<<<< Updated upstream
+=======
+build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$PigeonFirebaseOptions$Builder.class
+>>>>>>> Stashed changes
 build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$PigeonFirebaseOptions.class
 build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$PigeonInitializeResponse$Builder.class
 build/firebase_core/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/io/flutter/plugins/firebase/core/GeneratedAndroidFirebaseCore$PigeonInitializeResponse.class
@@ -1460,6 +1508,7 @@ build/firebase_core/intermediates/symbol_list_with_package_name/debug/generateDe
 build/firebase_core/outputs/aar/firebase_core-debug.aar
 build/firebase_core/outputs/logs/manifest-merger-debug-report.txt
 build/firebase_core/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+<<<<<<< Updated upstream
 build/reports/problems/problems-report.html
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/generate_cxx_metadata_472_timing.txt
 build/app/intermediates/cxx/debug/6c4nrc6o/logs/arm64-v8a/generate_cxx_metadata_822_timing.txt
@@ -1479,6 +1528,8 @@ build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e98
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_7.jar
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_8.jar
 build/app/intermediates/project_dex_archive/debug/dexBuilderDebug/out/9b24910e9892fea375bc47b07305915962c3a02886022614809e58ff1087a5e8_9.jar
+=======
+>>>>>>> Stashed changes
 build/pedometer/.transforms/096e014e9c4d42cbb359b21b53c02a64/results.bin
 build/pedometer/.transforms/096e014e9c4d42cbb359b21b53c02a64/transformed/classes/classes_dex/classes.dex
 build/pedometer/.transforms/8a8bc2a6028325672430299791062f40/results.bin
@@ -1689,3 +1740,7 @@ build/permission_handler_android/intermediates/symbol_list_with_package_name/deb
 build/permission_handler_android/outputs/aar/permission_handler_android-debug.aar
 build/permission_handler_android/outputs/logs/manifest-merger-debug-report.txt
 build/permission_handler_android/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+<<<<<<< Updated upstream
+=======
+build/reports/problems/problems-report.html
+>>>>>>> Stashed changes
