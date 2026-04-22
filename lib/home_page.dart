@@ -48,13 +48,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [ 
+      body: Center(
+        child:  
           Text(
             'Total Steps: $_steps',
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-        ],
       ),
     );
   }
