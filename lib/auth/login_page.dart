@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,6 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
 
   bool isLogin = true;
   bool loading = false;
@@ -25,10 +27,27 @@ class _LoginPageState extends State<LoginPage> {
           password: passwordController.text.trim(),
         );
       } else {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
+
+        final user = credential.user;
+
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set({
+            "username": usernameController.text.trim(),
+            "email": emailController.text.trim(),
+            "totalSteps": 0,
+            "todaySteps": 0,
+            "xp": 0,
+            "createdAt": FieldValue.serverTimestamp(),
+          });
+        }
       }
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -49,6 +68,11 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            if (!isLogin)
+            TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(labelText: "Username"),
+            ),
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: "Email"),
