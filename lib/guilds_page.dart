@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebaseshop/models/guild.dart';
 import 'package:flutter/material.dart';
 
 class GuildsPage extends StatefulWidget {
@@ -9,6 +12,79 @@ class GuildsPage extends StatefulWidget {
 
 class _GuildsPageState extends State<GuildsPage> {
   String searchQuery = '';
+
+  void _showCreateGuildDialog() {
+    final nameController = TextEditingController();
+    String activityLevel = "Casual";
+    bool isPrivate = false;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Create Guild"),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(labelText: "Guild Name"),
+                  ),
+
+                  DropdownButton<String>(
+                    value: activityLevel,
+                    items: ["Casual", "Moderate", "Hardcore"]
+                        .map((level) => DropdownMenuItem(
+                              value: level,
+                              child: Text(level),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() => activityLevel = value!);
+                    },
+                  ),
+
+                  SwitchListTile(
+                    title: const Text("Private Guild"),
+                    value: isPrivate,
+                    onChanged: (value) {
+                      setState(() => isPrivate = value);
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final user = FirebaseAuth.instance.currentUser;
+
+                await FirebaseFirestore.instance.collection('guilds').add({
+                  "name": nameController.text.trim(),
+                  "activityLevel": activityLevel,
+                  "isPrivate": isPrivate,
+                  "ownerId": user!.uid,
+                  "members": [user.uid],
+                  "totalSteps": 0,
+                  "createdAt": FieldValue.serverTimestamp(),
+                });
+
+                Navigator.pop(context);
+              },
+              child: const Text("Create"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
