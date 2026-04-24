@@ -64,13 +64,15 @@ class _GuildsPageState extends State<GuildsPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final user = FirebaseAuth.instance.currentUser;
+                final user = FirebaseAuth.instance.currentUser!;
 
-                await FirebaseFirestore.instance.collection('guilds').add({
+                final guildRef = await FirebaseFirestore.instance
+                    .collection('guilds')
+                    .add({
                   "name": nameController.text.trim(),
                   "activityLevel": activityLevel,
                   "isPrivate": isPrivate,
-                  "ownerId": user!.uid,
+                  "ownerId": user.uid,
                   "members": [user.uid],
                   "totalSteps": 0,
                   "createdAt": FieldValue.serverTimestamp(),
@@ -93,8 +95,7 @@ class _GuildsPageState extends State<GuildsPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildGuildList() {
     return Scaffold(
       appBar: AppBar(title: const Text("Guilds")),
 
@@ -161,5 +162,10 @@ class _GuildsPageState extends State<GuildsPage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
   }
 }

@@ -8,6 +8,66 @@ class GuildDetailPage extends StatelessWidget {
 
   const GuildDetailPage({super.key, required this.guildId});
 
+  Future<List<Map<String, dynamic>>> _fetchMembersData(
+      List<String> memberIds) async {
+    final firestore = FirebaseFirestore.instance;
+
+    final results = await Future.wait(
+      memberIds.map((id) async {
+        final doc = await firestore.collection('users').doc(id).get();
+        final data = doc.data()!;
+        return {
+          "uid": id,
+          "username": data['username'],
+          "todaySteps": data['todaySteps'] ?? 0,
+        };
+      }),
+    );
+
+    return results;
+  }
+
+  void _confirmLeave(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Leave Guild"),
+        content: const Text("Are you sure you want to leave this guild?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final user = FirebaseAuth.instance.currentUser!;
+
+              final guildRef = FirebaseFirestore.instance
+                  .collection('guilds')
+                  .doc(guildId);
+
+              // Remove user from guild
+              await guildRef.update({
+                "members": FieldValue.arrayRemove([user.uid])
+              });
+
+              // Remove guild from user
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .update({
+                "guildId": null,
+              });
+
+              Navigator.pop(context); // close dialog
+            },
+            child: const Text("Leave"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser!;
@@ -109,3 +169,4 @@ class GuildDetailPage extends StatelessWidget {
       ),
     );
   }
+}
