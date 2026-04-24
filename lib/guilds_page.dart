@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebaseshop/guild_detail_page.dart';
 import 'package:firebaseshop/models/guild.dart';
 import 'package:flutter/material.dart';
 
@@ -166,6 +167,31 @@ class _GuildsPageState extends State<GuildsPage> {
 
   @override
   Widget build(BuildContext context) {
-    
+    final user = FirebaseAuth.instance.currentUser!;
+
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final userData = snapshot.data!;
+        final guildId = userData.get('guildId');
+
+        // AUTO SWITCH
+        if (guildId != null) {
+          return GuildDetailPage(guildId: guildId);
+        }
+
+        // fallback to existing UI
+        return _buildGuildList();
+      },
+    );
   }
 }
