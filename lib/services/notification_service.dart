@@ -20,6 +20,24 @@ class NotificationService {
         ?.requestNotificationsPermission();
   }
 
+  static tz.TZDateTime _nextInstanceOfHour(int hour) {
+    final now = tz.TZDateTime.now(tz.local);
+
+    var scheduled = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+    );
+
+    if (scheduled.isBefore(now)) {
+      scheduled = scheduled.add(const Duration(days: 1));
+    }
+
+    return scheduled;
+  }
+
   static Future<void> scheduleRepeatingReminder() async {
     const androidDetails = AndroidNotificationDetails(
       'daily_reminder_channel',
@@ -29,18 +47,31 @@ class NotificationService {
       priority: Priority.high,
     );
 
-    const notificationDetails = NotificationDetails(
-      android: androidDetails,
-    );
+    const notificationDetails = NotificationDetails(android: androidDetails);
 
-    // Every 4 hours
-    await _notifications.periodicallyShow(
-      0,
-      'Daily Quest Reminder',
-      'Don’t forget to complete your steps and defeat today’s boss!',
-      RepeatInterval.everyMinute, // TEMP for testing
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-    );
+    final now = tz.TZDateTime.now(tz.local);
+
+    final times = [
+      10,
+      14,
+      18,
+      22,
+    ];
+
+    for (int i = 0; i < times.length; i++) {
+      final scheduledTime = _nextInstanceOfHour(times[i]);
+
+      await _notifications.zonedSchedule(
+        i,
+        'Daily Quest Reminder',
+        'Don’t forget to complete your steps!',
+        scheduledTime,
+        notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime, 
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    }
   }
 }

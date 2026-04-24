@@ -11,7 +11,11 @@ void main() async {
   );
   await NotificationService.init();
   await NotificationService.requestPermission();
-  await NotificationService.scheduleRepeatingReminder();
+  try {
+    await NotificationService.scheduleRepeatingReminder();
+  } catch (e) {
+    print("Notification scheduling failed: $e");
+  }
   runApp(const MyApp());
 }
 
