@@ -1,3 +1,4 @@
+import 'package:firebaseshop/guilds_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -48,12 +49,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child:  
+      body: Column(
+        children: [
+          SizedBox(height: 10),  
           Text(
             'Total Steps: $_steps',
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const GuildsPage()),
+              );
+            },
+            child: const Text("Guilds"),
+          ),
+        ]  
       ),
     );
   }
