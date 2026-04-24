@@ -76,6 +76,13 @@ class _GuildsPageState extends State<GuildsPage> {
                   "createdAt": FieldValue.serverTimestamp(),
                 });
 
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .update({
+                  "guildId": guildRef.id,
+                });
+
                 Navigator.pop(context);
               },
               child: const Text("Create"),
