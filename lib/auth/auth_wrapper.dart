@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../home_page.dart';
@@ -11,18 +12,42 @@ class AuthWrapper extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        if (snapshot.hasData) {
-          return const HomePage();
+        if (!snapshot.hasData) {
+          return const LoginPage();
         }
 
-        return const LoginPage();
+        final user = snapshot.data!;
+
+        return StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .snapshots(),
+          builder: (context, userSnapshot) {
+            if (!userSnapshot.hasData) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            final data =
+                userSnapshot.data!.data() as Map<String, dynamic>?;
+
+            final isComplete = data?['profileComplete'] ?? false;
+
+            if (!isComplete) {
+              return const CompleteProfilePage();
+            }
+
+            return const HomePage();
+          },
+        );
       },
     );
   }
