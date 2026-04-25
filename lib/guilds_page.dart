@@ -182,7 +182,8 @@ class _GuildsPageState extends State<GuildsPage> {
         }
 
         final userData = snapshot.data!;
-        final guildId = userData.get('guildId');
+        final data = userData.data() as Map<String, dynamic>;
+        final guildId = data['guildId'];
 
         // AUTO SWITCH
         if (guildId != null) {
