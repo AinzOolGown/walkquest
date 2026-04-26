@@ -47,6 +47,21 @@ class _LoginPageState extends State<LoginPage> {
             "xp": 0,
             "guildId" : "",
             "createdAt": FieldValue.serverTimestamp(),
+            "heightCm": 0,
+            "weightKg": 0,
+            "sex": "",
+            "dailyStepGoal": 0,
+            "profileComplete": false,
+            'hasActiveEnemy': false,
+            'selectedDifficulty': "",
+            'currentDifficultyMultiplier': 0.0,
+            'activeEnemy': {
+              'name': "",
+              'tier': "",
+              'maxHp': 10,
+              'currentHp': 10,
+              'weekStart': "",
+            }
           });
         }
       }

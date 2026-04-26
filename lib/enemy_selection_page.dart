@@ -90,4 +90,87 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
         return normal.first;
     }
   }
+
+  Widget _difficultyCard(
+    String title,
+    String description,
+    Color color,
+  ) {
+    final isSelected = selectedDifficulty == title;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedDifficulty = title);
+      },
+      child: Card(
+        color: isSelected ? color.withOpacity(0.3) : null,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(description),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Choose Your Weekly Challenge'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const Text(
+              'Select your first enemy difficulty. Your choice shapes your weekly step battle.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 20),
+
+            _difficultyCard(
+              'Easy',
+              'Lower pressure, steady progress, easier enemy scaling.',
+              Colors.green,
+            ),
+
+            _difficultyCard(
+              'Normal',
+              'Balanced progression with subtle weekly scaling.',
+              Colors.blue,
+            ),
+
+            _difficultyCard(
+              'Hard',
+              'Aggressive weekly growth and stronger enemies.',
+              Colors.red,
+            ),
+
+            const Spacer(),
+
+            ElevatedButton(
+              onPressed: loading ? null : _confirmSelection,
+              child: Text(
+                loading ? 'Generating Enemy...' : 'Begin Hunt',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
