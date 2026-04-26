@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseshop/guilds_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
@@ -50,8 +52,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 10),  
+          Text(
+            enemy['name'],
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Image.asset(
+            enemy['image'],
+            width: MediaQuery.of(context).size.width * 0.8,
+            fit: BoxFit.fitWidth,
+          ),
+
+          const SizedBox(height: 10),  
+
           Text(
             'Total Steps: $_steps',
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

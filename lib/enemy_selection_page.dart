@@ -52,7 +52,12 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
       final weeklyBaseHp = ((dailyGoal * 7) / 1000).round();
       final enemyHp = (weeklyBaseHp * multiplier).round();
 
-      final enemyName = _generateEnemyName(selectedDifficulty);
+      // 🔥 Match difficulty to correct unique enemy
+      final selectedEnemy = selectedDifficulty == 'Easy'
+          ? enemyChoices[0]
+          : selectedDifficulty == 'Normal'
+              ? enemyChoices[1]
+              : enemyChoices[2];
 
       await FirebaseFirestore.instance
           .collection('users')
@@ -62,7 +67,8 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
         'selectedDifficulty': selectedDifficulty,
         'currentDifficultyMultiplier': multiplier,
         'activeEnemy': {
-          'name': enemyName,
+          'name': selectedEnemy['name'],
+          'image': selectedEnemy['image'],
           'tier': selectedDifficulty,
           'maxHp': enemyHp,
           'currentHp': enemyHp,
@@ -79,24 +85,6 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
 
     if (mounted) {
       setState(() => loading = false);
-    }
-  }
-
-  String _generateEnemyName(String difficulty) {
-    final easy = ['Green Slime', 'Cave Bat', 'Wild Boar'];
-    final normal = ['Stone Golem', 'Orc Captain', 'Bandit Lord'];
-    final hard = ['Dragon Whelp', 'Titan Guard', 'Demon Knight'];
-
-    switch (difficulty) {
-      case 'Easy':
-        easy.shuffle();
-        return easy.first;
-      case 'Hard':
-        hard.shuffle();
-        return hard.first;
-      default:
-        normal.shuffle();
-        return normal.first;
     }
   }
 
@@ -123,6 +111,7 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
                 width: 64,
                 height: 64,
                 fit: BoxFit.contain,
+                filterQuality: FilterQuality.none,
               ),
               const SizedBox(height: 8),
               Text(
@@ -154,7 +143,7 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
         child: Column(
           children: [
             const Text(
-              'Select your first enemy difficulty. Your choice shapes your weekly step battle.',
+              'Select your enemy difficulty. Your choice shapes your weekly step battle.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
@@ -164,18 +153,21 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
               'Easy',
               'Lower pressure, steady progress, easier enemy scaling.',
               Colors.green,
+              enemyChoices[0],
             ),
 
             _difficultyCard(
               'Normal',
               'Balanced progression with subtle weekly scaling.',
               Colors.blue,
+              enemyChoices[1],
             ),
 
             _difficultyCard(
               'Hard',
               'Aggressive weekly growth and stronger enemies.',
               Colors.red,
+              enemyChoices[2],
             ),
 
             const Spacer(),
