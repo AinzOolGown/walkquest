@@ -55,13 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             'hasActiveEnemy': false,
             'selectedDifficulty': "",
             'currentDifficultyMultiplier': 0.0,
-            'activeEnemy': {
-              'name': "",
-              'tier': "",
-              'maxHp': 10,
-              'currentHp': 10,
-              'weekStart': "",
-            }
+            'activeEnemy': null
           });
         }
       }
