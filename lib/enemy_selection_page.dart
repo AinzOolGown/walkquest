@@ -101,15 +101,16 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
   }
 
   Widget _difficultyCard(
-    String title,
+    String difficulty,
     String description,
     Color color,
+    Map<String, String> enemy,
   ) {
-    final isSelected = selectedDifficulty == title;
+    final isSelected = selectedDifficulty == difficulty;
 
     return GestureDetector(
       onTap: () {
-        setState(() => selectedDifficulty = title);
+        setState(() => selectedDifficulty = difficulty);
       },
       child: Card(
         color: isSelected ? color.withOpacity(0.3) : null,
@@ -117,14 +118,22 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              Image.asset(
+                enemy['image']!,
+                width: 64,
+                height: 64,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 8),
               Text(
-                title,
+                enemy['name']!,
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
+              Text(difficulty),
+              const SizedBox(height: 6),
               Text(description),
             ],
           ),
