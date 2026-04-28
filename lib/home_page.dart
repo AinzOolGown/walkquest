@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseshop/guilds_page.dart';
 import 'package:firebaseshop/services/guild_enemy_generator.dart';
 import 'package:firebaseshop/settings_page.dart';
+import 'package:firebaseshop/widgets/attack_button.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebaseshop/widgets/enemy_display.dart';
 
 
 
@@ -289,46 +291,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 const SizedBox(height: 20),
 
-                // Enemy Name
-                Text(
-                  enemy['name'] ?? 'Unknown Enemy',
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Enemy Portrait
-                Image.asset(
-                  enemy['image'],
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  fit: BoxFit.fitWidth,
-                  filterQuality: FilterQuality.none,
-                ),
-
-                const SizedBox(height: 20),
-
-                // HP Display
-                Text(
-                  'HP: ${enemy['currentHp']} / ${enemy['maxHp']}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: LinearProgressIndicator(
-                    value: (enemy['currentHp'] / enemy['maxHp']),
-                    minHeight: 12,
-                  ),
-                ),
+                EnemyDisplay(enemy: enemy),
 
                 const SizedBox(height: 20),
 
@@ -346,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _attackButton(
+                    AttackButton(
                       label: "Punch",
                       requiredSteps: punchGoal,
                       currentSteps: _steps,
@@ -355,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () => _useAttack('punch'),
                     ),
 
-                    _attackButton(
+                    AttackButton(
                       label: "Slash",
                       requiredSteps: slashGoal,
                       currentSteps: _steps,
@@ -364,7 +327,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () => _useAttack('slash'),
                     ),
 
-                    _attackButton(
+                    AttackButton(
                       label: "Fireball",
                       requiredSteps: fireballGoal,
                       currentSteps: _steps,
@@ -395,33 +358,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-Widget _attackButton({
-  required String label,
-  required int requiredSteps,
-  required int currentSteps,
-  required bool used,
-  required Color color,
-  required VoidCallback onPressed,
-}) {
-  final charged = currentSteps >= requiredSteps;
-
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: used
-          ? Colors.grey
-          : charged
-              ? color
-              : Colors.black26,
-    ),
-    onPressed: (!charged || used) ? null : onPressed,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(label),
-        Text('$currentSteps / $requiredSteps'),
-      ],
-    ),
-  );
 }
