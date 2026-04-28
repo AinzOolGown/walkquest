@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseshop/guilds_page.dart';
-import 'package:firebaseshop/services/guild_enemy_generator.dart';
 import 'package:firebaseshop/settings_page.dart';
 import 'package:firebaseshop/widgets/attack_button.dart';
 import 'package:flutter/material.dart';
-import 'package:pedometer/pedometer.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:firebaseshop/widgets/enemy_display.dart';
 import 'package:firebaseshop/services/daily_reset_service.dart';
 import 'package:firebaseshop/services/combat_service.dart';
-
+import 'package:firebaseshop/services/step_service.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -22,98 +19,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _steps = 0;
-  late Stream<StepCount> _stepCountStream;
 
   @override
   void initState() {
     super.initState();
-    initStepCounter();
-    DailyResetService.checkAndReset();
-  }
-
-  Future<void> initStepCounter() async {
-    if (await Permission.activityRecognition.request().isGranted) {
-      _stepCountStream = Pedometer.stepCountStream;
-
-      _stepCountStream.listen(
-        onStepCount,
-        onError: onStepError,
-        cancelOnError: true,
-      );
-    } else {
-      print("Permission denied");
-    }
-  }
-
-  Future<void> onStepCount(StepCount event) async {
-    final user = FirebaseAuth.instance.currentUser!;
-    final userRef =
-        FirebaseFirestore.instance.collection('users').doc(user.uid);
-
-    // Get current user data
-    final doc = await userRef.get();
-    final data = doc.data();
-
-    if (data == null) return;
-
-    final todaySteps = event.steps;
-
-    await userRef.update({
-      'todaySteps': todaySteps,
-    });
-
-    final guildId = data['guildId'];
-
-    // Guild contribution section
-    if (guildId != null) {
-      final guildRef = FirebaseFirestore.instance
-          .collection('guilds')
-          .doc(guildId);
-
-      final previousContribution =
-          data['guildContributionToday'] ?? 0;
-
-      final delta = todaySteps - previousContribution;
-
-      if (delta > 0) {
-        await guildRef.update({
-          'activeGuildEnemy.currentSteps':
-              FieldValue.increment(delta),
-        });
-
-        await userRef.update({
-          'guildContributionToday': todaySteps,
-        });
-      }
-
-      // Check guild enemy defeat
-      final guildDoc = await guildRef.get();
-      final guildData = guildDoc.data();
-
-      if (guildData != null &&
-          guildData['activeGuildEnemy'] != null) {
-        final enemy = guildData['activeGuildEnemy'];
-
-        if (enemy['currentSteps'] >= enemy['requiredSteps']) {
-          final defeated =
-              (guildData['guildEnemiesDefeated'] ?? 0) + 1;
-
-          await guildRef.update({
-            'guildEnemiesDefeated': defeated,
+    StepService.startTracking(
+      onStepsUpdated: (steps) {
+        if (mounted) {
+          setState(() {
+            _steps = steps;
           });
-
-          await generateGuildEnemy(guildId);
         }
-      }
-    }
-
-    setState(() {
-      _steps = todaySteps;
-    });
-  }
-
-  void onStepError(error) {
-    print("Step Count Error: $error");
+      },
+    );
+    DailyResetService.checkAndReset();
   }
 
   @override
