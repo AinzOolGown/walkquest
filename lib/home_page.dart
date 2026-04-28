@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebaseshop/guilds_page.dart';
 import 'package:firebaseshop/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
@@ -324,6 +325,20 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const GuildsPage(),
+              ),
+            );
+          },
+          child: const Text("Guild"),
+        ),
       ),
     );
   }
