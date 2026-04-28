@@ -86,13 +86,54 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  
+  Future<void> _useAttack(String attackType) async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+    final doc = await userRef.get();
+    final data = doc.data();
+
+    if (data == null || data['activeEnemy'] == null) return;
+
+    final enemy =
+        Map<String, dynamic>.from(data['activeEnemy']);
+
+    final attacks =
+        Map<String, dynamic>.from(data['dailyAttacks']);
+
+    // Prevent reuse
+    if (attacks[attackType] == true) return;
+
+    final maxHp = enemy['maxHp'];
+
+    int damage;
+
+    switch (attackType) {
+      case 'punch':
+        damage = (maxHp * 0.08).round();
+        break;
+      case 'fireball':
+        damage = (maxHp * 0.22).round();
+        break;
+      default:
+        damage = (maxHp * 0.15).round();
+    }
+
+    enemy['currentHp'] =
+        (enemy['currentHp'] - damage).clamp(0, maxHp);
+
+    attacks[attackType] = true;
+
+    await userRef.update({
+      'activeEnemy': enemy,
+      'dailyAttacks': attacks,
+    });
+  }
 
   void onStepError(error) {
     print("Step Count Error: $error");
   }
-  
-  
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +153,12 @@ class _HomePageState extends State<HomePage> {
           final userData =
               snapshot.data!.data() as Map<String, dynamic>?;
           final dailyGoal = userData?['dailyStepGoal'];
-          final easyGoal = (dailyGoal * 0.8).round();
-          final normalGoal = dailyGoal;
-          final hardGoal = (dailyGoal * 1.25).round();
+          final punchGoal = (dailyGoal * 0.8).round();
+          final slashGoal = dailyGoal;
+          final fireballGoal = (dailyGoal * 1.25).round();
+
+          final attacks =
+              Map<String, dynamic>.from(userData?['dailyAttacks'] ?? {});
 
           if (userData == null || userData['activeEnemy'] == null) {
             return Center(
@@ -190,21 +234,37 @@ class _HomePageState extends State<HomePage> {
                 
                 const SizedBox(height: 10),
                 
-                LinearProgressIndicator(
-                  value: (_steps / hardGoal).clamp(0.0, 1.0),
-                  minHeight: 20,
-                ),
-
-                const SizedBox(height: 10),
-
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("Easy\n$easyGoal"),
-                    Text("Normal\n$normalGoal"),
-                    Text("Hard\n$hardGoal"),
+                    _attackButton(
+                      label: "Punch",
+                      requiredSteps: punchGoal,
+                      currentSteps: _steps,
+                      used: attacks['punch'] == true,
+                      color: Colors.green,
+                      onPressed: () => _useAttack('punch'),
+                    ),
+
+                    _attackButton(
+                      label: "Slash",
+                      requiredSteps: slashGoal,
+                      currentSteps: _steps,
+                      used: attacks['slash'] == true,
+                      color: Colors.blue,
+                      onPressed: () => _useAttack('slash'),
+                    ),
+
+                    _attackButton(
+                      label: "Fireball",
+                      requiredSteps: fireballGoal,
+                      currentSteps: _steps,
+                      used: attacks['fireball'] == true,
+                      color: Colors.red,
+                      onPressed: () => _useAttack('fireball'),
+                    ),
                   ],
-                ),
+                )
               ],
             ),
           );
@@ -212,4 +272,33 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Widget _attackButton({
+  required String label,
+  required int requiredSteps,
+  required int currentSteps,
+  required bool used,
+  required Color color,
+  required VoidCallback onPressed,
+}) {
+  final charged = currentSteps >= requiredSteps;
+
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: used
+          ? Colors.grey
+          : charged
+              ? color
+              : Colors.black26,
+    ),
+    onPressed: (!charged || used) ? null : onPressed,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label),
+        Text('$currentSteps / $requiredSteps'),
+      ],
+    ),
+  );
 }
