@@ -71,9 +71,52 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void onStepCount(StepCount event) {
+  Future<void> onStepCount(StepCount event) async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+    final doc = await userRef.get();
+    final data = doc.data();
+
+    if (data == null) return;
+
+    final dailyGoal = data['dailyStepGoal'] ?? 8000;
+
+    final easyGoal = (dailyGoal * 0.8).round();
+    final normalGoal = dailyGoal;
+    final hardGoal = (dailyGoal * 1.25).round();
+
+    final todaySteps = event.steps;
+
+    await userRef.update({
+      'todaySteps': todaySteps,
+    });
+
+    final achieved =
+        Map<String, dynamic>.from(data['dailyGoalTierAchieved'] ?? {});
+
+    if (todaySteps >= easyGoal && achieved['easy'] != true) {
+      await _dealDamage('easy');
+      achieved['easy'] = true;
+    }
+
+    if (todaySteps >= normalGoal && achieved['normal'] != true) {
+      await _dealDamage('normal');
+      achieved['normal'] = true;
+    }
+
+    if (todaySteps >= hardGoal && achieved['hard'] != true) {
+      await _dealDamage('hard');
+      achieved['hard'] = true;
+    }
+
+    await userRef.update({
+      'dailyGoalTierAchieved': achieved,
+    });
+
     setState(() {
-      _steps = event.steps;
+      _steps = todaySteps;
     });
   }
 
