@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebaseshop/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -175,6 +176,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('WalkQuest'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SettingsPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('users')
