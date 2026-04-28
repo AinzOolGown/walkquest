@@ -146,6 +146,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();
+
+                  if (!mounted) return;
+
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                 },
                 child: const Text('Logout'),
               ),
