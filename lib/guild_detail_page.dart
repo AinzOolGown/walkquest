@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebaseshop/services/guild_enemy_generator.dart';
 
 class GuildDetailPage extends StatelessWidget {
   final String guildId;
@@ -127,7 +126,8 @@ class GuildDetailPage extends StatelessWidget {
 
                   Image.asset(
                     guildEnemy['image'],
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    fit: BoxFit.fitWidth,
                     filterQuality: FilterQuality.none,
                   ),
 
