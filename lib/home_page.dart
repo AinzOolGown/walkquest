@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseshop/guilds_page.dart';
+import 'package:firebaseshop/services/guild_enemy_generator.dart';
 import 'package:firebaseshop/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
@@ -53,7 +54,8 @@ class _HomePageState extends State<HomePage> {
           'punch': false,
           'slash': false,
           'fireball': false,
-        }
+        },
+        'guildContributionToday': 0,
       });
     }
   }
@@ -77,11 +79,62 @@ class _HomePageState extends State<HomePage> {
     final userRef =
         FirebaseFirestore.instance.collection('users').doc(user.uid);
 
+    // Get current user data
+    final doc = await userRef.get();
+    final data = doc.data();
+
+    if (data == null) return;
+
     final todaySteps = event.steps;
 
     await userRef.update({
       'todaySteps': todaySteps,
     });
+
+    final guildId = data['guildId'];
+
+    // Guild contribution section
+    if (guildId != null) {
+      final guildRef = FirebaseFirestore.instance
+          .collection('guilds')
+          .doc(guildId);
+
+      final previousContribution =
+          data['guildContributionToday'] ?? 0;
+
+      final delta = todaySteps - previousContribution;
+
+      if (delta > 0) {
+        await guildRef.update({
+          'activeGuildEnemy.currentSteps':
+              FieldValue.increment(delta),
+        });
+
+        await userRef.update({
+          'guildContributionToday': todaySteps,
+        });
+      }
+
+      // Check guild enemy defeat
+      final guildDoc = await guildRef.get();
+      final guildData = guildDoc.data();
+
+      if (guildData != null &&
+          guildData['activeGuildEnemy'] != null) {
+        final enemy = guildData['activeGuildEnemy'];
+
+        if (enemy['currentSteps'] >= enemy['requiredSteps']) {
+          final defeated =
+              (guildData['guildEnemiesDefeated'] ?? 0) + 1;
+
+          await guildRef.update({
+            'guildEnemiesDefeated': defeated,
+          });
+
+          await generateGuildEnemy(guildId);
+        }
+      }
+    }
 
     setState(() {
       _steps = todaySteps;

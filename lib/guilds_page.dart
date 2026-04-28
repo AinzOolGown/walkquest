@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseshop/guild_detail_page.dart';
 import 'package:firebaseshop/models/guild.dart';
+import 'package:firebaseshop/services/guild_enemy_generator.dart';
 import 'package:flutter/material.dart';
 
 class GuildsPage extends StatefulWidget {
@@ -87,6 +88,8 @@ class _GuildsPageState extends State<GuildsPage> {
                     .update({
                   "guildId": guildRef.id,
                 });
+
+                await generateGuildEnemy(guildRef.id);
 
                 Navigator.pop(context);
               },

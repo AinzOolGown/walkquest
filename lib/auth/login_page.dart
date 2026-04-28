@@ -55,7 +55,12 @@ class _LoginPageState extends State<LoginPage> {
             'hasActiveEnemy': false,
             'selectedDifficulty': "",
             'currentDifficultyMultiplier': 0.0,
-            'activeEnemy': null
+            'activeEnemy': null,
+            'guildContributionToday' : 0,
+            'enemiesDefeated' : 0,
+            'dailyAttacks' : null,
+            'lastStepResetDate' : "",
+            'notificationsEnabled' : true, 
           });
         }
       }

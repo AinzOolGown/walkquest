@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebaseshop/services/guild_enemy_generator.dart';
 
 class GuildDetailPage extends StatelessWidget {
   final String guildId;
@@ -86,6 +87,7 @@ class GuildDetailPage extends StatelessWidget {
 
           final guildData = guildSnapshot.data!;
           final members = List<String>.from(guildData['members']);
+          final guildEnemy = guildData['activeGuildEnemy'];
 
           return FutureBuilder(
             future: _fetchMembersData(members),
@@ -122,6 +124,27 @@ class GuildDetailPage extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 20),
+
+                  Image.asset(
+                    guildEnemy['image'],
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    filterQuality: FilterQuality.none,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: LinearProgressIndicator(
+                      value: (guildEnemy['currentSteps'] /
+                              guildEnemy['requiredSteps'])
+                          .clamp(0.0, 1.0),
+                      minHeight: 18,
+                    ),
+                  ),
+
+                  Text(
+                    '${guildEnemy['currentSteps']} / ${guildEnemy['requiredSteps']}',
+                  ),
+
 
                   // 🏆 Leaderboard
                   Expanded(
