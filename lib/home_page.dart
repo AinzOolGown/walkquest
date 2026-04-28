@@ -119,6 +119,42 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _dealDamage(String tier) async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+    final doc = await userRef.get();
+    final data = doc.data();
+
+    if (data == null || data['activeEnemy'] == null) return;
+
+    final enemy =
+        Map<String, dynamic>.from(data['activeEnemy']);
+
+    final maxHp = enemy['maxHp'];
+
+    int damage;
+
+    switch (tier) {
+      case 'easy':
+        damage = (maxHp * 0.08).round();
+        break;
+      case 'hard':
+        damage = (maxHp * 0.22).round();
+        break;
+      default:
+        damage = (maxHp * 0.15).round();
+    }
+
+    enemy['currentHp'] =
+        (enemy['currentHp'] - damage).clamp(0, maxHp);
+
+    await userRef.update({
+      'activeEnemy': enemy,
+    });
+  }
+
   void onStepError(error) {
     print("Step Count Error: $error");
   }
