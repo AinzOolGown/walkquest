@@ -46,7 +46,7 @@ class StepService {
 
     final guildId = data['guildId'];
 
-    if (guildId != null) {
+    if (guildId != null && guildId.toString().isNotEmpty) {
       final guildRef = FirebaseFirestore.instance
           .collection('guilds')
           .doc(guildId);

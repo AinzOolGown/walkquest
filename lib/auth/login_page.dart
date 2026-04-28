@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             "totalSteps": 0,
             "todaySteps": 0,
             "xp": 0,
-            "guildId" : "",
+            "guildId" : null,
             "createdAt": FieldValue.serverTimestamp(),
             "heightCm": 0,
             "weightKg": 0,

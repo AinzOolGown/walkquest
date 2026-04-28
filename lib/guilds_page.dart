@@ -101,6 +101,78 @@ class _GuildsPageState extends State<GuildsPage> {
     );
   }
 
+  Future<void> _joinGuild(Guild guild) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) return;
+
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+    final guildRef =
+        FirebaseFirestore.instance.collection('guilds').doc(guild.id);
+
+    try {
+      // Prevent joining private guilds
+      if (guild.isPrivate) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("This guild is private."),
+          ),
+        );
+        return;
+      }
+
+      // Prevent joining if already in a guild
+      final userDoc = await userRef.get();
+      final userData = userDoc.data();
+
+      final currentGuildId = userData?['guildId'];
+
+      if (currentGuildId != null &&
+          currentGuildId.toString().isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Leave your current guild first.",
+            ),
+          ),
+        );
+        return;
+      }
+
+      // Add user to guild
+      await guildRef.update({
+        'members': FieldValue.arrayUnion([user.uid]),
+      });
+
+      // Update user guild
+      await userRef.update({
+        'guildId': guild.id,
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Joined ${guild.name}!",
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Failed to join guild: $e",
+          ),
+        ),
+      );
+    }
+  }
+
   Widget _buildGuildList() {
     return Scaffold(
       appBar: AppBar(title: const Text("Guilds")),
@@ -150,9 +222,7 @@ class _GuildsPageState extends State<GuildsPage> {
                       subtitle: Text(
                           "${guild.activityLevel} • ${guild.members.length} members"),
                       trailing: Text("${guild.totalSteps} steps"),
-                      onTap: () {
-                        // Future: open guild detail page
-                      },
+                      onTap: () => _joinGuild(guild),
                     );
                   },
                 );
@@ -191,7 +261,7 @@ class _GuildsPageState extends State<GuildsPage> {
         final guildId = data['guildId'];
 
         // AUTO SWITCH
-        if (guildId != null) {
+        if (guildId != null && guildId.toString().isNotEmpty) {
           return GuildDetailPage(guildId: guildId);
         }
 
