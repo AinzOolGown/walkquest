@@ -38,6 +38,10 @@ class NotificationService {
     return scheduled;
   }
 
+  static Future<void> cancelAllNotifications() async {
+    await _notifications.cancelAll();
+  }
+
   static Future<void> scheduleRepeatingReminder() async {
     const androidDetails = AndroidNotificationDetails(
       'daily_reminder_channel',
