@@ -159,6 +159,8 @@ class _HomePageState extends State<HomePage> {
     print("Step Count Error: $error");
   }
   
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,6 +178,10 @@ class _HomePageState extends State<HomePage> {
 
           final userData =
               snapshot.data!.data() as Map<String, dynamic>?;
+          final dailyGoal = userData?['dailyStepGoal'];
+          final easyGoal = (dailyGoal * 0.8).round();
+          final normalGoal = dailyGoal;
+          final hardGoal = (dailyGoal * 1.25).round();
 
           if (userData == null || userData['activeEnemy'] == null) {
             return Center(
@@ -197,7 +203,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 const SizedBox(height: 20),
 
-                // 🏷 Enemy Name
+                // Enemy Name
                 Text(
                   enemy['name'] ?? 'Unknown Enemy',
                   style: const TextStyle(
@@ -208,7 +214,7 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 20),
 
-                // 👾 Enemy Portrait
+                // Enemy Portrait
                 Image.asset(
                   enemy['image'],
                   width: MediaQuery.of(context).size.width * 0.8,
@@ -218,7 +224,7 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 20),
 
-                // ❤️ HP Display
+                // HP Display
                 Text(
                   'HP: ${enemy['currentHp']} / ${enemy['maxHp']}',
                   style: const TextStyle(
@@ -240,13 +246,31 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 20),
 
-                // 👣 Step Count
+                // Step Count
                 Text(
                   'Total Steps: $_steps',
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+                
+                const SizedBox(height: 10),
+                
+                LinearProgressIndicator(
+                  value: (_steps / hardGoal).clamp(0.0, 1.0),
+                  minHeight: 20,
+                ),
+
+                const SizedBox(height: 10),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Easy\n$easyGoal"),
+                    Text("Normal\n$normalGoal"),
+                    Text("Hard\n$hardGoal"),
+                  ],
                 ),
               ],
             ),
