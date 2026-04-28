@@ -121,14 +121,51 @@ class _HomePageState extends State<HomePage> {
     }
 
     enemy['currentHp'] =
-        (enemy['currentHp'] - damage).clamp(0, maxHp);
+      (enemy['currentHp'] - damage).clamp(0, maxHp);
+    bool defeated = enemy['currentHp'] <= 0;
 
     attacks[attackType] = true;
 
-    await userRef.update({
-      'activeEnemy': enemy,
-      'dailyAttacks': attacks,
-    });
+    if (defeated) {
+      int currentGoal = data['dailyStepGoal'] ?? 8000;
+      int enemiesDefeated = data['enemiesDefeated'] ?? 0;
+      String difficulty = data['selectedDifficulty'] ?? 'Normal';
+
+      double multiplier;
+
+      switch (difficulty) {
+        case 'Easy':
+          multiplier = 0;
+          break;
+        case 'Hard':
+          multiplier = 100;
+          break;
+        default:
+          multiplier = 250;
+      }
+
+      final newGoal = (currentGoal + multiplier).round();
+
+      await userRef.update({
+        'dailyStepGoal': newGoal,
+        'enemiesDefeated': enemiesDefeated + 1,
+        'hasActiveEnemy': false,
+        'selectedDifficulty': null,
+        'activeEnemy': null,
+        'dailyAttacks': {
+          'punch': false,
+          'slash': false,
+          'fireball': false,
+        }
+      });
+
+      return;
+    }else{
+      await userRef.update({
+        'activeEnemy': enemy,
+        'dailyAttacks': attacks,
+      });
+    }
   }
 
   void onStepError(error) {
