@@ -138,47 +138,64 @@ class _EnemySelectionPageState extends State<EnemySelectionPage> {
         automaticallyImplyLeading: false,
         title: const Text('Choose Your Weekly Challenge'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const Text(
-              'Select your enemy difficulty. Your choice shapes your weekly step battle.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Select your enemy difficulty. Your choice shapes your weekly step battle.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      const SizedBox(height: 20),
 
-            _difficultyCard(
-              'Easy',
-              'Lower pressure, steady progress, easier enemy scaling.',
-              Colors.green,
-              enemyChoices[0],
-            ),
+                      _difficultyCard(
+                        'Easy',
+                        'Lower pressure, steady progress, easier enemy scaling.',
+                        Colors.green,
+                        enemyChoices[0],
+                      ),
 
-            _difficultyCard(
-              'Normal',
-              'Balanced progression with subtle weekly scaling.',
-              Colors.blue,
-              enemyChoices[1],
-            ),
+                      _difficultyCard(
+                        'Normal',
+                        'Balanced progression with subtle weekly scaling.',
+                        Colors.blue,
+                        enemyChoices[1],
+                      ),
 
-            _difficultyCard(
-              'Hard',
-              'Aggressive weekly growth and stronger enemies.',
-              Colors.red,
-              enemyChoices[2],
-            ),
+                      _difficultyCard(
+                        'Hard',
+                        'Aggressive weekly growth and stronger enemies.',
+                        Colors.red,
+                        enemyChoices[2],
+                      ),
 
-            const Spacer(),
+                      const SizedBox(height: 24),
 
-            ElevatedButton(
-              onPressed: loading ? null : _confirmSelection,
-              child: Text(
-                loading ? 'Generating Enemy...' : 'Begin Hunt',
+                      ElevatedButton(
+                        onPressed: loading ? null : _confirmSelection,
+                        child: Text(
+                          loading
+                              ? 'Generating Enemy...'
+                              : 'Begin Hunt',
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
