@@ -77,6 +77,8 @@ class _GuildsPageState extends State<GuildsPage> {
                   "members": [user.uid],
                   "totalSteps": 0,
                   "createdAt": FieldValue.serverTimestamp(),
+                  "guildEnemiesDefeated": 0,
+                  "activeGuildEnemy": null,
                 });
 
                 await FirebaseFirestore.instance
