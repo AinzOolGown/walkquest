@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebaseshop/widgets/enemy_display.dart';
+import 'package:firebaseshop/services/daily_reset_service.dart';
+import 'package:firebaseshop/services/combat_service.dart';
 
 
 
@@ -26,40 +28,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     initStepCounter();
-    _checkDailyReset();
-  }
-
-  Future<void> _checkDailyReset() async {
-    final user = FirebaseAuth.instance.currentUser!;
-    final userRef =
-        FirebaseFirestore.instance.collection('users').doc(user.uid);
-
-    final doc = await userRef.get();
-    final data = doc.data();
-
-    if (data == null) return;
-
-    final today =
-        DateTime.now().toIso8601String().split('T').first;
-
-    final lastReset = data['lastStepResetDate'] ?? today;
-
-    if (lastReset != today) {
-      final yesterdaySteps = data['todaySteps'] ?? 0;
-      final totalSteps = data['totalSteps'] ?? 0;
-
-      await userRef.update({
-        'totalSteps': totalSteps + yesterdaySteps,
-        'todaySteps': 0,
-        'lastStepResetDate': today,
-        'dailyAttacks': {
-          'punch': false,
-          'slash': false,
-          'fireball': false,
-        },
-        'guildContributionToday': 0,
-      });
-    }
+    DailyResetService.checkAndReset();
   }
 
   Future<void> initStepCounter() async {
@@ -141,88 +110,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _steps = todaySteps;
     });
-  }
-
-  Future<void> _useAttack(String attackType) async {
-    final user = FirebaseAuth.instance.currentUser!;
-    final userRef =
-        FirebaseFirestore.instance.collection('users').doc(user.uid);
-
-    final doc = await userRef.get();
-    final data = doc.data();
-
-    if (data == null || data['activeEnemy'] == null) return;
-
-    final enemy =
-        Map<String, dynamic>.from(data['activeEnemy']);
-
-    final attacks =
-        Map<String, dynamic>.from(data['dailyAttacks']);
-
-    // Prevent reuse
-    if (attacks[attackType] == true) return;
-
-    final maxHp = enemy['maxHp'];
-
-    int damage;
-
-    switch (attackType) {
-      case 'punch':
-        damage = (maxHp * 0.08).round();
-        break;
-      case 'fireball':
-        damage = (maxHp * 0.22).round();
-        break;
-      default:
-        damage = (maxHp * 0.15).round();
-    }
-
-    enemy['currentHp'] =
-      (enemy['currentHp'] - damage).clamp(0, maxHp);
-    bool defeated = enemy['currentHp'] <= 0;
-
-    attacks[attackType] = true;
-
-    if (defeated) {
-      int currentGoal = data['dailyStepGoal'] ?? 8000;
-      int enemiesDefeated = data['enemiesDefeated'] ?? 0;
-      String difficulty = data['selectedDifficulty'] ?? 'Normal';
-
-      double multiplier;
-
-      switch (difficulty) {
-        case 'Easy':
-          multiplier = 0;
-          break;
-        case 'Hard':
-          multiplier = 100;
-          break;
-        default:
-          multiplier = 250;
-      }
-
-      final newGoal = (currentGoal + multiplier).round();
-
-      await userRef.update({
-        'dailyStepGoal': newGoal,
-        'enemiesDefeated': enemiesDefeated + 1,
-        'hasActiveEnemy': false,
-        'selectedDifficulty': null,
-        'activeEnemy': null,
-        'dailyAttacks': {
-          'punch': false,
-          'slash': false,
-          'fireball': false,
-        }
-      });
-
-      return;
-    }else{
-      await userRef.update({
-        'activeEnemy': enemy,
-        'dailyAttacks': attacks,
-      });
-    }
   }
 
   void onStepError(error) {
@@ -315,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                       currentSteps: _steps,
                       used: attacks['punch'] == true,
                       color: Colors.green,
-                      onPressed: () => _useAttack('punch'),
+                      onPressed: () => CombatService.useAttack('punch'),
                     ),
 
                     AttackButton(
@@ -324,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                       currentSteps: _steps,
                       used: attacks['slash'] == true,
                       color: Colors.blue,
-                      onPressed: () => _useAttack('slash'),
+                      onPressed: () => CombatService.useAttack('slash'),
                     ),
 
                     AttackButton(
@@ -333,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                       currentSteps: _steps,
                       used: attacks['fireball'] == true,
                       color: Colors.red,
-                      onPressed: () => _useAttack('fireball'),
+                      onPressed: () => CombatService.useAttack('fireball'),
                     ),
                   ],
                 )

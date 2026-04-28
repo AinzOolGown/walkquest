@@ -53,8 +53,6 @@ class NotificationService {
 
     const notificationDetails = NotificationDetails(android: androidDetails);
 
-    final now = tz.TZDateTime.now(tz.local);
-
     final times = [
       10,
       14,
