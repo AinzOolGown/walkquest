@@ -68,24 +68,6 @@ class EnemyDisplay extends StatelessWidget {
                     },
                   ),
           ),
-          const SizedBox(height: 14),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 7,
-            ),
-            decoration: BoxDecoration(
-              color: const Color(0xFFC62828).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(99),
-            ),
-            child: Text(
-              enemy['tier']?.toString() ?? "Active Enemy",
-              style: const TextStyle(
-                color: Color(0xFFC62828),
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-          ),
         ],
       ),
     );

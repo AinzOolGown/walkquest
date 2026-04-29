@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 6),
           const Text(
-            "Turn your steps into attacks.",
+            "Today's Steps.",
             style: TextStyle(
               color: Colors.white,
               fontSize: 26,
